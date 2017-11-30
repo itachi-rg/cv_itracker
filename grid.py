@@ -2,6 +2,7 @@ import pygame
 from math import sqrt
 from sys import argv
 import numpy as np
+from data import *
 
 current_grid_number = -1
 
@@ -106,11 +107,15 @@ def run(length=330):
       row = pos[1] // (HEIGHT + MARGIN)
       # Set that location to one
       grid = np.zeros([num_rows,num_cols])
+
+      if column > (num_cols - 1): column = num_cols - 1
+      if row > (num_rows - 1): row = num_rows - 1
+
       grid[row][column] = 1
       grid_number = row*num_cols+column
       setGridNum(grid_number)
 
-      print "pos ", pos, " grid ", getGridNum()
+      #print "pos ", pos, " grid ", getGridNum()
          
       # Set the screen background
       screen.fill(BLACK)
@@ -130,9 +135,11 @@ def run(length=330):
    
       # Limit to 60 frames per second
       clock.tick(10)
-   
+
       # Go ahead and update the screen with what we've drawn.
       pygame.display.flip()
+      with open("current_grid", "w") as text_file:
+        text_file.write("%d" % getGridNum())
    
   # Be IDLE friendly. If you forget this line, the program will 'hang'
   # on exit.
